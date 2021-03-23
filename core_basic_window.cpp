@@ -29,7 +29,7 @@
 #include <glfw3.h>
 #include <deque>
 
-#define byte char
+#define byte unsigned char
 namespace fs = std::filesystem;
 
 
@@ -308,23 +308,24 @@ int32_t main(int32_t argc, char* argv[])
                         break;
                     case KEY_TAB:
                         closeFileViewer = true;
-                        configDone = true;
-                        byte frame = stopFrames;
-                        byte addBallNFrames = ballsEveryNFrames;
-                        byte ballsAddedPerFrame = ballsAddedEveryNFrames;
-                        byte lineWidth = lineThickness;
+                        frame = stopFrames;
+                        addBallNFrames = ballsEveryNFrames;
+                        ballsAddedPerFrame = ballsAddedEveryNFrames;
+                        lineWidth = lineThickness;
                         break;
                 }
 
                 
                 BeginDrawing();
                 ClearBackground(RAYWHITE);
-                DrawText(TextFormat("GPU: %s\n\nStats:\n Balls reached: %i\n Max FPS: %i\n Time to run: %i:%i:%i\n\nSettings:\n Stop at framerate %i\n Add ball(s) every %i frame(s)\n Add %i ball(s) every %i frame(s)\n Draw lines with width %i", gpuModel.c_str(), maxBalls, maxFPS, hours, mins, secs, frameSettings[stopFrames], addBallNFramesSettings[ballsEveryNFrames], ballsAddedPerFrameSettings[ballsAddedEveryNFrames], lineWidthSettings[lineThickness]), 10, 10, 20, selectedSetting == 3 ? LIME : BLACK);
-
+                DrawText(TextFormat("GPU: %s\n\nStats:\n Balls reached: %i\n Max FPS: %i\n Time to run: %i:%i:%i\n\nSettings:\n Stop at framerate %i\n Add ball(s) every %i frame(s)\n Add %i ball(s) every %i frame(s)\n Draw lines with width %i", gpuModel.c_str(), maxBalls, maxFPS, hours, mins, secs, frameSettings[stopFrames], addBallNFramesSettings[ballsEveryNFrames], ballsAddedPerFrameSettings[ballsAddedEveryNFrames], addBallNFramesSettings[ballsEveryNFrames], lineWidthSettings[lineThickness]), 10, 10, 20, selectedSetting == 3 ? LIME : BLACK);
                 DrawText("Press enter to return to configuration, or tab to run with these settings", 10, screenHeight-25, 20, LIME);
+
                 EndDrawing();
                 if (WindowShouldClose()) closeNow = true;
             }
+            closeFileViewer = false;
+            ClearDroppedFiles();
         }
     }
     SetTargetFPS(0);
